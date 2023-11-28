@@ -1,0 +1,18 @@
+.header {
+    background-color:rgba(60, 60, 60, 0.9);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    padding: 1rem;
+    color: rgb(0, 0, 0);
+    padding-left: 250px;
+    /* font-weight: bold; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.font1 {font-size: 15px;color: bisque;margin: 15px;}
+.right {float: right;}
+.white {color:white}
