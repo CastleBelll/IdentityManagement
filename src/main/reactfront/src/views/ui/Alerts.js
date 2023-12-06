@@ -1,5 +1,5 @@
 import { Col, Row } from "reactstrap";
-import ProjectTables from "../../components/dashboard/ProjectTable";
+import ProjectTables from "../../components/dashboard/SystemList";
 
 import { CardTitle } from "reactstrap";
 

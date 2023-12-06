@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,11 +40,11 @@ public class SystemUserController {
                               @RequestParam String username,
                               @RequestParam String password) {
         // URL encode the password
-        String encodedPassword = common.encodeUrlParameter(password);
+
 
         // PowerShell command to get user accounts
         String powerShellCommand = "Invoke-Command -ComputerName " + host +
-                " -Credential (New-Object PSCredential -ArgumentList @('" + username + "', (ConvertTo-SecureString -String '" + encodedPassword + "' -AsPlainText -Force)))" +
+                " -Credential (New-Object PSCredential -ArgumentList @('" + username + "', (ConvertTo-SecureString -String '" + password + "' -AsPlainText -Force)))" +
                 " -ScriptBlock {Get-WmiObject Win32_UserAccount | Select-Object Name}";
 
         // PowerShell execution and result retrieval
@@ -57,11 +58,10 @@ public class SystemUserController {
                                    @RequestParam String username,
                                    @RequestParam String password) {
         // URL encode the password
-        String encodedPassword = common.encodeUrlParameter(password);
 
         // SSH connection and get user accounts command
         String sshCommand = "cat /etc/passwd";
-        String accountsList = linuxService.getLinuxAccounts(host, username, encodedPassword, sshCommand);
+        String accountsList = linuxService.getLinuxAccounts(host, username, password, sshCommand);
 
         return "계정 리스트:\n" + accountsList;
     }
@@ -75,5 +75,16 @@ public class SystemUserController {
             @RequestParam String password) {
 
         return dbmsService.getMySQLAccounts(ip, database, port, user, password);
+    }
+
+    @GetMapping("/getPostgreSQLAccounts")
+    public List<Map<String, Object>> getPostgreSQLAccounts(
+            @RequestParam String ip,
+            @RequestParam String database,
+            @RequestParam int port,
+            @RequestParam String user,
+            @RequestParam String password) {
+
+        return dbmsService.getPostgreSQLAccounts(ip, database, port, user, password);
     }
 }

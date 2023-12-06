@@ -1,6 +1,7 @@
 package com.example.TestProject.controller;
 
 import com.example.TestProject.dto.SystemDto;
+import com.example.TestProject.entity.SystemDB;
 import com.example.TestProject.service.SystemDBService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +15,6 @@ public class SystemController {
     private final SystemDBService systemDBService;
 
 
-    @PutMapping("/system/update")
-    public int update(@RequestBody SystemDto requestDto){
-        return 0;
-    }
     @DeleteMapping("/system/delete")
     public int delete(@RequestBody SystemDto requestDto){
         return 0;
@@ -33,5 +30,15 @@ public class SystemController {
         return systemDBService.findAllDesc();
     }
 
+
+    @GetMapping("/system/select/{id}")
+    public SystemDB getGetSystemById(@PathVariable String systemId){
+        return systemDBService.getSystemById(systemId);
+    }
+
+    @PostMapping("/system/update/{id}")
+    public SystemDB updateSystemDB(@PathVariable String systemId, @RequestBody SystemDB updateSystem){
+        return systemDBService.updateSystemDB(systemId, updateSystem);
+    }
 
 }
