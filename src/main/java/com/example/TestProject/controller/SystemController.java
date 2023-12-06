@@ -31,13 +31,13 @@ public class SystemController {
     }
 
 
-    @GetMapping("/system/select/{id}")
-    public SystemDB getGetSystemById(@PathVariable String systemId){
+    @GetMapping("/system/select/detail")
+    public SystemDB getGetSystemById(@RequestParam String systemId){
         return systemDBService.getSystemById(systemId);
     }
 
-    @PostMapping("/system/update/{id}")
-    public SystemDB updateSystemDB(@PathVariable String systemId, @RequestBody SystemDB updateSystem){
+    @PostMapping("/system/update/detail")
+    public SystemDB updateSystemDB(@RequestParam String systemId, @RequestBody SystemDB updateSystem){
         return systemDBService.updateSystemDB(systemId, updateSystem);
     }
 

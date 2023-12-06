@@ -1,16 +1,14 @@
-import {useState, useEffect} from "react";
+import {useState, useEffect, useCallback} from "react";
 import {Button, Card, CardBody, Table} from "reactstrap";
-import {Navigate} from "react-router-dom";
-import axios from "axios";
 import {getSystemList} from "../../api/System/SystemApi";
-import {Link} from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-
-
-
+import SystemDetail from './SystemDetail'
+import Modal from 'react-modal';
+import modalStyles from '../../layout/ModalStyles'; // Import the styles
 
 function SystemList() {
     const navigate = useNavigate();
+    const [selectedSystemId, setSelectedSystemId] = useState(null);
     const [systems, setSystems] = useState([]);
     const accessToken = localStorage.getItem("accessToken");
     const username = localStorage.getItem("userId");
@@ -43,10 +41,18 @@ function SystemList() {
             setCheckedItems(updatedItems);
         }
     };
-    const systemList = [];
-    const handerCheckBox = () =>{
 
-    }
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+
+    const openModal = (SystemId) => {
+        setSelectedSystemId(SystemId);
+        setModalIsOpen(true);
+    };
+
+    const closeModal = () => {
+        setSelectedSystemId(null);
+        setModalIsOpen(false);
+    };
 
     return (
         <div>
@@ -89,7 +95,13 @@ function SystemList() {
                                     {/*  width="45"*/}
                                     {/*  height="45"*/}
                                     {/*/>*/}
+                                    <a onClick={() => openModal(system.systemId)}>
                                     {system.systemId}
+                                    </a>
+                                    <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={modalStyles}>
+                                        {selectedSystemId && <SystemDetail systemId={selectedSystemId} />}
+                                        <button onClick={closeModal}>닫기</button>
+                                    </Modal>
                                     {/*<Link to={{ pathname: '../../AdminForms', search: `?param=${system.systemId}` }}*/}
                                     {/*      style={{textDecorationLine:'none',color:'black'}}>*/}
                                     {/*    <Button className="btn" outline color="secondary">*/}

@@ -8,7 +8,7 @@ const IManage = () => {
     <div>
       {/***Table ***/}
       <CardTitle tag="h6" className="border-bottom p-3 mb-0">
-            <span style={{fontSize:23}}>시스템 관리 솔루션</span>
+            <span style={{fontSize:23}}>시스템 관리</span>
             <span style={{float:"right"}}>
             <Link to="../Forms" style={{textDecorationLine:'none',color:'black'}}>
             <Button className="btn" outline color="secondary">
