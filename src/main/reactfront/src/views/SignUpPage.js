@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { signUp } from "../api/user/UserAPI";
+import { useNavigate } from 'react-router-dom';
 
 export default function SignUpPage() {
     const [values, setValues] = useState({
@@ -7,7 +8,7 @@ export default function SignUpPage() {
         userName: "",
         userPassword: "",
     });
-
+    const navigate = useNavigate();
     const handleChange = async (e) => {
         setValues({...values,
             [e.target.id]: e.target.value,
@@ -17,7 +18,7 @@ export default function SignUpPage() {
     const handleSubmit = async (e) => {
         signUp(values)
             .then((response) => {
-                window.location.href = `/login`;
+                navigate('/About');
             }).catch((error) => {
             console.log(error);
         });

@@ -1,28 +1,28 @@
 import {useState, useEffect} from "react";
 import {Button, Card, CardBody, Table} from "reactstrap";
-
+import {Navigate} from "react-router-dom";
 import axios from "axios";
 import {getSystemList} from "../../api/System/SystemApi";
 import {Link} from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 
 
 
 function SystemList() {
-
-  const [systems, setSystems] = useState([]);
+    const navigate = useNavigate();
+    const [systems, setSystems] = useState([]);
     const accessToken = localStorage.getItem("accessToken");
-    const username = localStorage.getItem("username");
+    const username = localStorage.getItem("userId");
     console.log("토큰 : " + accessToken +"\n"
-                +"username : " + username);
+        +"username : " + username);
     useEffect(() => {
         if( accessToken == null){
             alert("로그인하세요");
-            window.location = '/';
+            navigate('/About');
         }else{
             const fetchData = async () => {
                 const data = await getSystemList();
-                console.log('백엔드 응답 데이터:', data);
                 setSystems(data);
                 // ...데이터를 처리하는 로직 작성
             };
@@ -31,78 +31,95 @@ function SystemList() {
         }
 
     }, []); //
+    const [checkedItems, setCheckedItems] = useState([]);
+
+    const handleCheckboxChange = (event, systemId) => {
+        const { checked } = event.target;
+        if (checked) {
+            setCheckedItems([...checkedItems, systemId]);
+            console.log(checkedItems)
+        } else {
+            const updatedItems = checkedItems.filter((item) => item !== systemId);
+            setCheckedItems(updatedItems);
+        }
+    };
+    const systemList = [];
+    const handerCheckBox = () =>{
+
+    }
+
+    return (
+        <div>
+            <Card>
+                <CardBody>
+                    <button className="btn" color="secondary" >웹 사용자에게 권한 부여</button>
 
 
+                    {/*<CardTitle tag="h5">Project Listing</CardTitle>*/}
+                    {/*<CardSubtitle className="mb-2 text-muted" tag="h6">*/}
+                    {/*  Overview of the projects*/}
+                    {/*</CardSubtitle>*/}
 
-  return (
-      <div>
-        <Card>
-          <CardBody>
-            {/*<CardTitle tag="h5">Project Listing</CardTitle>*/}
-            {/*<CardSubtitle className="mb-2 text-muted" tag="h6">*/}
-            {/*  Overview of the projects*/}
-            {/*</CardSubtitle>*/}
+                    <Table className="no-wrap mt-3 align-middle text-center" Table bordered hover >
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox"/></th>
+                            <th>시스템 ID</th>
+                            <th>시스템명</th>
+                            <th>시스템유형</th>
+                            <th>IP</th>
+                            <th>계정수</th>
+                            <th>관리자</th>
+                            <th>생성일자</th>
+                            <th>동기화일자</th>
+                            <th>동기화여부</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {systems.map((system,index) => (
+                            <tr key={index} className="border-top">
+                                <td>
+                                    <input type="checkbox"  onChange={(e) => handleCheckboxChange(e, system.systemId)}/>
+                                </td>
+                                <td>
+                                    {/*<img*/}
+                                    {/*  src={tdata.avatar}*/}
+                                    {/*  className="rounded-circle"*/}
+                                    {/*  alt="avatar"*/}
+                                    {/*  width="45"*/}
+                                    {/*  height="45"*/}
+                                    {/*/>*/}
+                                    {system.systemId}
+                                    {/*<Link to={{ pathname: '../../AdminForms', search: `?param=${system.systemId}` }}*/}
+                                    {/*      style={{textDecorationLine:'none',color:'black'}}>*/}
+                                    {/*    <Button className="btn" outline color="secondary">*/}
+                                    {/*        관리자등록*/}
+                                    {/*    </Button>*/}
+                                    {/*</Link>*/}
+                                </td>
+                                <td>{system.systemName}</td>
+                                <td>{system.systemType}</td>
+                                <td>{system.ipAddr}</td>
+                                <td>3</td>
+                                <td>1</td>
+                                <td>{system.createDt}</td>
+                                <td>{system.syncDt}</td>
+                                <td>
+                                    {system.syncYn === "N" ? (
+                                        <span className="p-2 bg-danger rounded-circle d-inline-block"></span>
+                                    ) : (
+                                        <span className="p-2 bg-success rounded-circle d-inline-block"></span>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </Table>
+                </CardBody>
+            </Card>
 
-            <Table className="no-wrap mt-3 align-middle text-center" Table bordered hover >
-              <thead>
-              <tr>
-                <th><input
-                    type="checkbox"
-                    // checked={checkboxes.every(checkbox => checkbox.checked)}
-                    // onChange={handleSelectAll}
-                /></th>
-                  <th>시스템 ID</th>
-                  <th>시스템명</th>
-                  <th>시스템유형</th>
-                  <th>IP</th>
-                  <th>계정수</th>
-                  <th>관리자</th>
-                  <th>생성일자</th>
-                  <th>동기화일자</th>
-                  <th>동기화여부</th>
-              </tr>
-              </thead>
-              <tbody>
-              {systems.map((system,index) => (
-                  <tr key={index} className="border-top">
-                      <td>
-                          <input type="checkbox"/>
-                      </td>
-                    <td>
-                        {/*<img*/}
-                        {/*  src={tdata.avatar}*/}
-                        {/*  className="rounded-circle"*/}
-                        {/*  alt="avatar"*/}
-                        {/*  width="45"*/}
-                        {/*  height="45"*/}
-                        {/*/>*/}
-                        <Link to={{ pathname: './SystemDetail', search: `?param=${system.systemId}` }}
-                              style={{textDecorationLine:'none',color:'black'}}>
-                        {system.systemId}
-                        </Link>
-                    </td>
-                    <td>{system.systemName}</td>
-                      <td>{system.systemType}</td>
-                      <td>{system.ipAddr}</td>
-                    <td>3</td>
-                    <td>1</td>
-                      <td>{system.createDt}</td>
-                      <td>{system.syncDt}</td>
-                      <td>
-                          {system.syncYn === "N" ? (
-                              <span className="p-2 bg-danger rounded-circle d-inline-block"></span>
-                          ) : (
-                              <span className="p-2 bg-success rounded-circle d-inline-block"></span>
-                          )}
-                      </td>
-                  </tr>
-              ))}
-              </tbody>
-            </Table>
-          </CardBody>
-        </Card>
-      </div>
-  );
+        </div>
+    );
 }
 
 export default SystemList;
@@ -250,6 +267,5 @@ export default SystemList;
 //   );
 //   setCheckboxes(updatedCheckboxes);
 // };
-
 
 

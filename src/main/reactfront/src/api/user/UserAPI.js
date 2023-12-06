@@ -14,6 +14,11 @@ export const UserApi = axios.create({
     },
 });
 
+export const getUserList = async () =>{
+    const response = await UserApi.get(`/api/v1/useList`);
+    return response.data;
+}
+
 /** SIGNUP API */
 export const signUp = async ({ userId,userName, userPassword }) => {
     const data = {userId, userName, userPassword };

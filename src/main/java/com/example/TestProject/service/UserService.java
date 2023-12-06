@@ -1,6 +1,7 @@
 package com.example.TestProject.service;
 
 import com.example.TestProject.common.Common;
+import com.example.TestProject.dto.SystemDto;
 import com.example.TestProject.dto.UserRequestDto;
 import com.example.TestProject.dto.UserResponseDto;
 import com.example.TestProject.entity.Role;
@@ -13,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +23,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
     LocalDateTime currentDateTime = LocalDateTime.now();
     Common common = new Common() ;
 
@@ -58,5 +60,11 @@ public class UserService {
         User user = this.userRepository.findById(userNum).orElseThrow(
                 () -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다. user_id = " + userNum));
         this.userRepository.delete(user);
+    }
+    @Transactional(readOnly = true)
+    public List<UserResponseDto> getUserList(){
+        return userRepository.findAll().stream()
+                .map(UserResponseDto::new)
+                .collect(Collectors.toList());
     }
 }

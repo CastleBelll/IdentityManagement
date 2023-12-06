@@ -11,6 +11,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -35,12 +40,14 @@ public class WebSecurityConfig {
 //                // 회원가입 및 로그인 관련 모든 요청에 대해 아무나 승인
                 .antMatchers("/api/v1/auth/**").permitAll()
                 .antMatchers("/api/v1/user").permitAll()
+                .antMatchers("/api/v1/**").hasRole("USER")
+
                 .antMatchers("/system/admin/**").hasRole("USER")
                 .antMatchers("/system/**").hasRole("USER")
                 .and()
                 .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("http://localhost:3000")
+                .logoutUrl("/api/v1/auth/logout")
+                .permitAll()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -48,5 +55,6 @@ public class WebSecurityConfig {
                 .addFilterBefore(this.jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
 
 }
