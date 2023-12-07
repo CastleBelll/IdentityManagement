@@ -4,14 +4,14 @@ import {getSystemList} from "../../api/System/SystemApi";
 import { useNavigate } from 'react-router-dom';
 import SystemDetail from './SystemDetail'
 import Modal from 'react-modal';
-import modalStyles from '../../layout/ModalStyles'; // Import the styles
-
+import modalStyles from '../../layout/ModalStyles';
 function SystemList() {
     const navigate = useNavigate();
     const [selectedSystemId, setSelectedSystemId] = useState(null);
     const [systems, setSystems] = useState([]);
     const accessToken = localStorage.getItem("accessToken");
     const username = localStorage.getItem("userId");
+
     console.log("토큰 : " + accessToken +"\n"
         +"username : " + username);
     useEffect(() => {
@@ -99,8 +99,7 @@ function SystemList() {
                                     {system.systemId}
                                     </a>
                                     <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={modalStyles}>
-                                        {selectedSystemId && <SystemDetail systemId={selectedSystemId} />}
-                                        <button onClick={closeModal}>닫기</button>
+                                        {selectedSystemId && <SystemDetail onClose={closeModal} systemId={selectedSystemId} />}
                                     </Modal>
                                     {/*<Link to={{ pathname: '../../AdminForms', search: `?param=${system.systemId}` }}*/}
                                     {/*      style={{textDecorationLine:'none',color:'black'}}>*/}

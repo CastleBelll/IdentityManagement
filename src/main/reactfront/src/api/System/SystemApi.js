@@ -53,9 +53,11 @@ export const insertSystem =
     }
 };
 
-export const updateSystem = async () => {
+export const updateSystem = async (systemId, formData) => {
     try {
-        const response = await SystemApi.get('/update');
+        const response = await SystemApi.put(`/update?systemId=${systemId}`,
+            formData, {
+        });
         console.log('백엔드 응답:', response.data);
         return response.data;
     } catch (error) {
