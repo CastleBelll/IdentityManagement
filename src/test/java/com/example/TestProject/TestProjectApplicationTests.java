@@ -23,24 +23,6 @@ class TestProjectApplicationTests {
 	void contextLoads() {
 	}
 	@Test
-	void saveTest(){
-
-		SystemDB systemDb = SystemDB.builder()
-				.createDt("20231114235000")
-				.systemId("system1")
-				.createBy("manager")
-				.systemCategory("OS")
-				.systemType("Windows")
-				.systemDesc("테스트 장비입니다.")
-				.systemGroup("default")
-				.systemName("테스트1")
-				.syncDt("20231114202000")
-				.syncYn("Y")
-				.ipAddr("192.168.1.13")
-				.build();
-		systemDBService.save(new SystemDto(systemDb));
-	}
-	@Test
 	void testUserSave(){
 	Common common = new Common();
 		LocalDateTime currentDateTime = LocalDateTime.now();
