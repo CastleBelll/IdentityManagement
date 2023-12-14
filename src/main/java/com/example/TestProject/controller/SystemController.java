@@ -1,15 +1,19 @@
 package com.example.TestProject.controller;
 
 import com.example.TestProject.common.EncodePassword;
+import com.example.TestProject.dto.SystemAccountDto;
 import com.example.TestProject.dto.SystemDetailDto;
 import com.example.TestProject.dto.SystemDto;
 import com.example.TestProject.dto.SystemKeywordDto;
+import com.example.TestProject.entity.SystemAccount;
 import com.example.TestProject.entity.SystemDB;
 import com.example.TestProject.entity.SystemKeyword;
 import com.example.TestProject.repository.SystemKeywordRepository;
+import com.example.TestProject.service.SystemAccountService;
 import com.example.TestProject.service.SystemDBService;
 import com.example.TestProject.service.SystemKeywordService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +25,7 @@ import java.util.List;
 public class SystemController {
     private final SystemDBService systemDBService;
     private final SystemKeywordService systemKeywordService;
-
+    private final SystemAccountService systemAccountService;
     EncodePassword en = new EncodePassword();
 
     @DeleteMapping("/system/delete")
@@ -49,8 +53,20 @@ public class SystemController {
     }
 
     @GetMapping("/system/select")
-    public List<SystemDto> findAll() {
-        return systemDBService.findAllDesc();
+    public ResponseEntity<List<SystemDto>> findAll() {
+        List<SystemDto> systemDto = systemDBService.findAllDesc();
+        for(SystemDto systemDB : systemDto){
+            String systemId = systemDB.getSystemId();
+            int accountCount = systemAccountService.getSystemAccountCountBySystemId(systemId);
+            systemDB.setSystem_user_id_count(accountCount);
+        }
+        return new ResponseEntity<>(systemDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAccounts")
+    public ResponseEntity<List<SystemAccount>> getSystemAccountBySystemId(@RequestParam String systemId) {
+        List<SystemAccount> systemAccount = systemAccountService.getSystemAccountsBySystemId(systemId);
+        return new ResponseEntity<>(systemAccount, HttpStatus.OK);
     }
 
 

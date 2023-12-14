@@ -33,3 +33,18 @@ export const syncLinux = async (systemId, ipAddr, loginId, loginPasswd) => {
         return []; // 에러 발생 시 빈 배열 반환
     }
 };
+
+export const getSystemAccounts = async (systemId) => {
+    try {
+        const response = await SystemApi.get(`/getAccounts`, {
+            params: {
+                systemId: `${systemId}`,
+            },
+        });
+        console.log('백엔드 응답:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('에러 발생:', error);
+        return []; // 에러 발생 시 빈 배열 반환
+    }
+};

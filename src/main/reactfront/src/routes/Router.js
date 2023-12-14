@@ -26,7 +26,7 @@ const ThemeRoutes = [
     path: "/",
     element: <FullLayout />,
     children: [
-      { path: "/", element: <Navigate to="/starter" /> },
+      { path: "/", element: <Navigate to="/imanage" /> },
       { path: "/imanage", exact: true, element: <IManage /> },
       { path: "/starter", exact: true, element: <Starter /> },
       { path: "/alerts", exact: true, element: <Alerts /> },

@@ -123,7 +123,7 @@ public class SystemUserController {
             systemAccount.setSystemDB(systemDB);
             systemAccount.getSystemDB().setSystemId(systemId);
             systemAccount.setSystemUserId(key);
-            systemAccount.setServiceUserGroup(userGroupMap.get(key));
+            systemAccount.setSystemUserGroup(userGroupMap.get(key));
 
             systemAccountService.saveSystemAccount(systemAccount);
         }

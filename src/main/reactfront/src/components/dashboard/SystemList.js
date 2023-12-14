@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import SystemDetail from './SystemDetail'
 import Modal from 'react-modal';
 import modalStyles from '../../layout/ModalStyles';
+import SystemAccountList from "./SystemAccountList";
 function SystemList() {
     const navigate = useNavigate();
     const [selectedSystemId, setSelectedSystemId] = useState(null);
@@ -43,6 +44,7 @@ function SystemList() {
     };
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [modalIsOpen2, setModalIsOpen2] = useState(false);
 
     const openModal = (SystemId) => {
         setSelectedSystemId(SystemId);
@@ -54,6 +56,15 @@ function SystemList() {
         setModalIsOpen(false);
     };
 
+    const openModal2 = (SystemId) => {
+        setSelectedSystemId(SystemId);
+        setModalIsOpen2(true);
+    };
+
+    const closeModal2 = () => {
+        setSelectedSystemId(null);
+        setModalIsOpen2(false);
+    };
     return (
         <div>
             <Card>
@@ -111,7 +122,14 @@ function SystemList() {
                                 <td>{system.systemName}</td>
                                 <td>{system.systemType}</td>
                                 <td>{system.ipAddr}</td>
-                                <td>3</td>
+                                <td>
+                                    <a onClick={()=> openModal2(system.systemId)}>
+                                        {system.system_user_id_count}
+                                    </a>
+                                    <Modal isOpen={modalIsOpen2} onRequestClose={closeModal2} style={modalStyles}>
+                                        {selectedSystemId && <SystemAccountList onClose={closeModal2} systemId={selectedSystemId}/>}
+                                    </Modal>
+                                </td>
                                 <td>1</td>
                                 <td>{system.createDt}</td>
                                 <td>{system.syncDt}</td>
