@@ -30,9 +30,9 @@ public class SystemAccount {
     @Column(name = "C_DT")
     private String c_dt;
 
-    @Column(name = "SERVICE_USER_GROUP")
-    private String serviceUserGroup;
+    @Column(name = "SYSTEM_USER_GROUP")
+    private String systemUserGroup;
 
-    @Column(name = "SERVICE_USER_PASSWD_SYNC")
-    private String serviceUserPasswdSync;
+    @Column(name = "SYSTEM_USER_PASSWD_SYNC")
+    private String systemUserPasswdSync;
 }

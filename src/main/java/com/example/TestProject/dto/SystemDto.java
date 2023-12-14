@@ -38,8 +38,10 @@ public class SystemDto {
 
     private String syncYn;
 
+    private int system_user_id_count;
+
     @Builder
-    public SystemDto(String systemId, int systemNum, String systemName, String systemDesc, String systemCategory, String systemType, String ipAddr, String systemGroup, String createDt, String createBy, String syncDt, String syncYn) {
+    public SystemDto(String systemId, int systemNum, String systemName, String systemDesc, String systemCategory, String systemType, String ipAddr, String systemGroup, String createDt, String createBy, String syncDt, String syncYn, int system_user_id_count) {
         this.systemId = systemId;
         this.systemNum = systemNum;
         this.systemName = systemName;
@@ -52,6 +54,7 @@ public class SystemDto {
         this.createBy = createBy;
         this.syncDt = syncDt;
         this.syncYn = syncYn;
+        this.system_user_id_count = system_user_id_count;
     }
 
     public SystemDto(){

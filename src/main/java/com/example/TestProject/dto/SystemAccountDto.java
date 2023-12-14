@@ -17,8 +17,8 @@ public class SystemAccountDto {
     private String systemUserId;
     private String systemUserPasswd;
     private String c_dt;
-    private String serviceUserGroup;
-    private String serviceUserPasswdSync;
+    private String systemUserGroup;
+    private String systemUserPasswdSync;
 
 
     public SystemAccountDto(){
@@ -26,14 +26,14 @@ public class SystemAccountDto {
     }
 
     @Builder
-    public SystemAccountDto(Long id, String systemId, String systemUserId, String systemUserPasswd, String c_dt, String serviceUserGroup, String serviceUserPasswdSync) {
+    public SystemAccountDto(Long id, String systemId, String systemUserId, String systemUserPasswd, String c_dt, String systemUserGroup, String systemUserPasswdSync) {
         this.id = id;
         this.systemId = systemId;
         this.systemUserId = systemUserId;
         this.systemUserPasswd = systemUserPasswd;
         this.c_dt = c_dt;
-        this.serviceUserGroup = serviceUserGroup;
-        this.serviceUserPasswdSync = serviceUserPasswdSync;
+        this.systemUserGroup = systemUserGroup;
+        this.systemUserPasswdSync = systemUserPasswdSync;
     }
 
     public SystemAccountDto(SystemAccount entity) {
@@ -42,7 +42,7 @@ public class SystemAccountDto {
         this.systemUserId = entity.getSystemUserId();
         this.systemUserPasswd = entity.getSystemUserPasswd();
         this.c_dt = entity.getC_dt();
-        this.serviceUserGroup = entity.getServiceUserGroup();
-        this.serviceUserPasswdSync = entity.getServiceUserPasswdSync();
+        this.systemUserGroup = entity.getSystemUserGroup();
+        this.systemUserPasswdSync = entity.getSystemUserPasswdSync();
     }
 }

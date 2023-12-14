@@ -36,7 +36,7 @@ public class SystemAccountService {
 try {
     if (!list1.contains(systemAccount.getSystemUserId())) {
         if (systemKeyword.getLoginId().equals(systemAccount.getSystemUserId())) {
-            systemAccount.setServiceUserPasswdSync("Y");
+            systemAccount.setSystemUserPasswdSync("Y");
             systemAccount.setSystemUserPasswd(systemKeyword.getLoginPasswd());
         }
         System.out.println("systemAccount : " + systemAccount);
@@ -55,5 +55,15 @@ try {
     @Transactional
     public List<String> getSystemById(String systemId) {
         return systemAccountRepository.findBySystemId(systemId);
+    }
+
+    @Transactional
+    public int getSystemAccountCountBySystemId(String systemId) {
+        return systemAccountRepository.findBySystemIdCount(systemId);
+    }
+
+    @Transactional
+    public List<SystemAccount> getSystemAccountsBySystemId(String systemId) {
+        return systemAccountRepository.findAccountsBySystemId(systemId);
     }
 }

@@ -16,4 +16,10 @@ public interface SystemAccountRepository extends JpaRepository<SystemAccount, Lo
 
     @Query("SELECT s.systemUserId FROM SystemAccount s WHERE s.systemDB.systemId = :systemId")
     List<String> findBySystemId(@Param("systemId") String systemId);
+
+    @Query("SELECT s FROM SystemAccount s WHERE s.systemDB.systemId = :systemId")
+    List<SystemAccount> findAccountsBySystemId(@Param("systemId") String systemId);
+
+    @Query("SELECT count(*) FROM SystemAccount s WHERE s.systemDB.systemId = :systemId")
+    int findBySystemIdCount(@Param("systemId") String systemId);
 }
