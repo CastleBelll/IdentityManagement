@@ -1,7 +1,10 @@
 package com.example.TestProject.service;
 
 import com.example.TestProject.dto.SystemDto;
+import com.example.TestProject.dto.SystemKeywordDto;
 import com.example.TestProject.entity.SystemDB;
+import com.example.TestProject.entity.SystemKeyword;
+import com.example.TestProject.repository.SystemKeywordRepository;
 import com.example.TestProject.repository.SystemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,14 +20,19 @@ import java.util.stream.Collectors;
 @Service
 public class SystemDBService {
     private final SystemRepository systemRepository;
+    private final SystemKeywordRepository systemKeywordRepository;
 
     @Transactional
-    public int save(SystemDto requestDto) {
-        requestDto.setCreateBy("manager");
-        requestDto.setSyncYn("N");
-        requestDto.setCreateDt(LocalDateTime.now().toString());
-        requestDto.setSyncDt(LocalDateTime.now().toString());
-        return systemRepository.save(requestDto.toEntity()).getSystemNum();
+    public void save(SystemDB systemDB, SystemKeyword systemKeyword) {
+        systemDB.setCreateBy("manager");
+        systemDB.setSyncYn("N");
+        systemDB.setCreateDt(LocalDateTime.now().toString());
+        systemDB.setSyncDt(LocalDateTime.now().toString());
+
+        SystemDB saveSystemDB = systemRepository.save(systemDB);
+
+        systemKeyword.setSystemDB(saveSystemDB);
+        systemKeywordRepository.save(systemKeyword);
     }
 
     @Transactional(readOnly = true)

@@ -55,6 +55,8 @@ export const insertSystem =
 
 export const updateSystem = async (systemId, formData) => {
     try {
+        console.log(systemId);
+        console.log(formData);
         const response = await SystemApi.put(`/update?systemId=${systemId}`,
             formData, {
         });

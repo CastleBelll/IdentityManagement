@@ -15,11 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 public class SystemAdmin {
 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, name ="SYSTME_ADMIN_NUM")
     private Long systemAdminNum;
 
-    @Id
     @Column(name = "SYSTME_ADMIN_ID")
     private String systemAdminId;
 
@@ -36,12 +36,11 @@ public class SystemAdmin {
     private String updateDt;
 
     @ManyToOne
-    @JoinColumn(name = "SYSTEM_ID")
+    @JoinColumn(name = "SYSTEM_ID", referencedColumnName = "SYSTEM_ID")
     private SystemDB systemDB;
 
     @ManyToOne
-
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID")
     private  User user;
 
     @Builder

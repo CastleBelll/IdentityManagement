@@ -2,6 +2,7 @@ package com.example.TestProject.repository;
 
 import com.example.TestProject.entity.SystemDB;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -15,4 +16,8 @@ public interface SystemRepository extends JpaRepository<SystemDB, Long> {
 
     @Query("SELECT s FROM SystemDB s WHERE s.systemId = :systemId")
     Optional<SystemDB> findBySystemId(@Param("systemId") String systemId);
+
+    @Modifying
+    @Query("UPDATE FROM SystemDB s SET s.syncYn = :syncYn WHERE s.systemId = :systemId")
+    void updateSyncBySystemId(@Param("systemId") String systemId, @Param("syncYn") String syncYn);
 }

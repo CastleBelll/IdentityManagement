@@ -2,22 +2,15 @@
 import React, { useEffect, useState, useCallback} from 'react';
 
 import {getSystemDetail, updateSystem} from "../../api/System/SystemApi";
+import {syncLinux} from "../../api/System/SystemUserApi";
+
 import {useNavigate} from "react-router-dom";
 import {ButtonGroup, Button, Form, FormGroup, Input, Label} from "reactstrap";
 
 const SystemDetail = ({systemId,onClose}) => {
     const [formData, setFormData] = useState({
-        systemId: "",
-        systemName: "",
-        systemDesc: "",
-        ipAddr: "",
-    });
-    const [formkeywordData, setFormKeywordData] = useState({
-        loginId: "",
-        loginPasswd: "",
-        loginPort: "",
-        loginProtocol:"",
-        loginDriverUrl: "",
+        systemDB: {} ,
+        systemKeyword : {}
     });
     const navigate = useNavigate();
     const accessToken = localStorage.getItem("accessToken");
@@ -32,7 +25,6 @@ const SystemDetail = ({systemId,onClose}) => {
             const fetchData = async () => {
                 const data = await getSystemDetail(systemId);
                 setFormData(data);
-
                 console.log(data);
                 // ...데이터를 처리하는 로직 작성
             };
@@ -49,8 +41,17 @@ const SystemDetail = ({systemId,onClose}) => {
     const handleChange = (e) => {
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value,
+            systemDB: {
+                ...formData.systemDB,
+                [e.target.name]: e.target.value,
+            },
+            systemKeyword: {
+                ...formData.systemKeyword,
+                [e.target.name]: e.target.value,
+            },
         });
+        console.log("여기 : " +formData);
+
     };
     const handleClose = () => {
         // 부모 컴포넌트에 닫기 이벤트를 전달
@@ -59,10 +60,9 @@ const SystemDetail = ({systemId,onClose}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         try {
-            console.log(formData)
-            console.log(systemId)
+            console.log("시작");
+            console.log(formData);
             const response = updateSystem(systemId, formData);
-            console.log(response.data); // 서버로부터 받은 응답 확인
             // 글쓰기가 성공하면 리다이렉션 또는 다른 작업 수행
             window.alert('수정 완료.');
         } catch (error) {
@@ -78,8 +78,29 @@ const SystemDetail = ({systemId,onClose}) => {
             }
         }
 
-        console.log(formData);
 
+
+    };
+
+    const syncSubmit = (e) => {
+        e.preventDefault();
+        try {
+            console.log(formData);
+            const response = syncLinux(systemId, formData.systemDB.ipAddr, formData.systemKeyword.loginId, formData.systemKeyword.loginPasswd);
+            // 글쓰기가 성공하면 리다이렉션 또는 다른 작업 수행
+            alert('동기화 성공');
+        } catch (error) {
+            if (error.response || error.response.status === 500 || error.response.status === 400) {
+                // 서버에서 오류 응답을 받은 경우
+                alert(error.response.data);
+                console.error(error.response.data.toString());
+            } else {
+                // 요청 자체에 오류가 있는 경우
+                alert('동기화 실패');
+
+                console.error('Error creating post:', error.message);
+            }
+        }
     };
 
     return (
@@ -98,7 +119,7 @@ const SystemDetail = ({systemId,onClose}) => {
                         placeholder="System ID"
                         type="text"
                         readOnly
-                        value={formData.systemId}
+                        value={formData.systemDB.systemId}
                         required
                     />
                 </FormGroup>
@@ -109,7 +130,7 @@ const SystemDetail = ({systemId,onClose}) => {
                         name="systemName"
                         placeholder="System Name"
                         type="text"
-                        value={formData.systemName}
+                        value={formData.systemDB.systemName}
                         onChange={handleChange}
                         required
                     />
@@ -121,7 +142,7 @@ const SystemDetail = ({systemId,onClose}) => {
                         name="systemDesc"
                         placeholder="System Desc"
                         type="text"
-                        value={formData.systemDesc}
+                        value={formData.systemDB.systemDesc}
                         onChange={handleChange}
                         required
                     />
@@ -133,7 +154,20 @@ const SystemDetail = ({systemId,onClose}) => {
                         name="ipAddr"
                         placeholder="IP"
                         type="text"
-                        value={formData.ipAddr}
+                        value={formData.systemDB.ipAddr}
+                        onChange={handleChange}
+                        required
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <Label for="systemType">시스템 타입</Label>
+                    <Input
+                        id="systemType"
+                        name="systemType"
+                        placeholder="시스템 타입"
+                        type="text"
+                        readOnly
+                        value={formData.systemDB.systemType}
                         onChange={handleChange}
                         required
                     />
@@ -147,6 +181,7 @@ const SystemDetail = ({systemId,onClose}) => {
             </div>
             <div>
                 <Form onSubmit={handleSubmit}>
+                    {formData.systemDB.systemType === 'Linux' || formData.systemDB.systemType === 'Windows' ? (
                     <FormGroup>
                         <Label for="loginPort">접속 포트</Label>
                         <Input
@@ -154,10 +189,11 @@ const SystemDetail = ({systemId,onClose}) => {
                             name="loginPort"
                             placeholder="Login Port"
                             type="text"
-                            value={formkeywordData.loginPort}
+                            value={formData.systemKeyword.loginPort}
                             required
                         />
                     </FormGroup>
+                    ) : null}
                     <FormGroup>
                         <Label for="loginId">접속 계정</Label>
                         <Input
@@ -165,7 +201,7 @@ const SystemDetail = ({systemId,onClose}) => {
                             name="loginId"
                             placeholder="Login ID"
                             type="text"
-                            value={formkeywordData.loginId}
+                            value={formData.systemKeyword.loginId}
                             onChange={handleChange}
                             required
                         />
@@ -176,12 +212,13 @@ const SystemDetail = ({systemId,onClose}) => {
                             id="loginPasswd"
                             name="loginPasswd"
                             placeholder="Login Passwd"
-                            type="text"
-                            value={formkeywordData.loginPasswd}
+                            type="password"
+                            value={formData.systemKeyword.loginPasswd}
                             onChange={handleChange}
                             required
                         />
                     </FormGroup>
+                    {formData.systemDB.systemType === 'Linux' || formData.systemDB.systemType === 'Windows' ? null : (
                     <FormGroup>
                         <Label for="loginDriverUrl">접속 URL(DB)</Label>
                         <Input
@@ -189,27 +226,17 @@ const SystemDetail = ({systemId,onClose}) => {
                             name="loginDriverUrl"
                             placeholder="Login Driver URL"
                             type="text"
-                            value={formkeywordData.loginDriverUrl}
+                            value={formData.systemKeyword.loginDriverUrl}
                             onChange={handleChange}
                             required
                         />
                     </FormGroup>
-                    <FormGroup>
-                        <Label for="loginProtocol">접속 프로토콜</Label>
-                        <Input
-                            id="loginProtocol"
-                            name="loginProtocol"
-                            placeholder="Login Protocol"
-                            type="text"
-                            value={formkeywordData.loginProtocol}
-                            onChange={handleChange}
-                            required
-                        />
-                    </FormGroup>
+                    )}
                 </Form>
             </div>
             <div>
                 <div className="button-group" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Button className="btn" color="secondary" onClick={syncSubmit}>Sync</Button>
                     <Button className="btn" outline color="primary" onClick={handleSubmit}>Save</Button>
                     <Button className="btn" color="primary" onClick={handleClose}>Close</Button>
                 </div>

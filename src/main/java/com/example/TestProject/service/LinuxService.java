@@ -11,13 +11,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 @Service
 public class LinuxService {
-    public String getLinuxAccounts(String host, String username, String password, String command) {
+    public String getLinuxAccounts(String ipAddr, String loginId, String loginPasswd, String command) {
         int port = 22;
+
+        System.out.println("ipAddr : "+ipAddr + " loginId : "+loginId + " loginPasswd : "+loginPasswd);
 
         try {
             JSch jsch = new JSch();
-            Session session = jsch.getSession(username, host, port);
-            session.setPassword(password);
+            Session session = jsch.getSession(loginId, ipAddr, port);
+            session.setPassword(loginPasswd);
             session.setConfig("StrictHostKeyChecking", "no");
             session.connect();
 
