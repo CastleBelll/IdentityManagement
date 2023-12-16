@@ -4,6 +4,7 @@ import com.example.TestProject.auth.jwt.JwtTokenFilter;
 import com.example.TestProject.auth.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.*;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -38,12 +39,18 @@ public class WebSecurityConfig {
 //                .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
 //                .antMatchers("/api/v2/admin/**").hasRole("ADMIN")
 //                // 회원가입 및 로그인 관련 모든 요청에 대해 아무나 승인
-                .antMatchers("/api/v1/auth/**").permitAll()
-                .antMatchers("/api/v1/user").permitAll()
-                .antMatchers("/api/v1/**").hasRole("USER")
-
                 .antMatchers("/system/admin/**").hasRole("USER")
                 .antMatchers("/system/**").hasRole("USER")
+                .antMatchers("/system/select/systemList").hasRole("USER")
+
+                .antMatchers(HttpMethod.GET, "/api/v1/user").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/api/v1/user").permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/v1/user").permitAll()
+
+                .antMatchers(HttpMethod.POST, "/api/v1/user").permitAll()
+                .antMatchers("/api/v1/auth/**").permitAll()
+
+
                 .and()
                 .logout()
                 .logoutUrl("/api/v1/auth/logout")

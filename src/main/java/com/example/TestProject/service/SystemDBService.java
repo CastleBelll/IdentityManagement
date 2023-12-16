@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +47,16 @@ public class SystemDBService {
     public SystemDB getSystemById(String systemId) {
         return systemRepository.findBySystemId(systemId).orElse(null);
     }
-
+    @Transactional
+    public List<SystemDto> getSelectedSystemList(List<String> systemdIds) {
+        ArrayList<SystemDto> systemDBList = new ArrayList<SystemDto>();
+        for (String systemId:systemdIds) {
+            SystemDB systemDB = systemRepository.findBySystemId(systemId).get();
+            SystemDto systemDto = new SystemDto(systemDB);
+            systemDBList.add(systemDto);
+        }
+        return (List)systemDBList;
+    }
     @Transactional
     public SystemDB updateSystemDB(String systemId, SystemDB updateSystem) {
         SystemDB systemDB = systemRepository.findBySystemId(systemId).orElse(null);

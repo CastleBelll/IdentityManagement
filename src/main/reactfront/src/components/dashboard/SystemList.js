@@ -1,11 +1,12 @@
 import {useState, useEffect, useCallback} from "react";
 import {Button, Card, CardBody, Table} from "reactstrap";
 import {getSystemList} from "../../api/System/SystemApi";
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import SystemDetail from './SystemDetail'
 import Modal from 'react-modal';
 import modalStyles from '../../layout/ModalStyles';
 import SystemAccountList from "./SystemAccountList";
+import UserList from "./UserList";
 function SystemList() {
     const navigate = useNavigate();
     const [selectedSystemId, setSelectedSystemId] = useState(null);
@@ -45,6 +46,7 @@ function SystemList() {
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [modalIsOpen2, setModalIsOpen2] = useState(false);
+    const [modalIsOpen3, setModalIsOpen3] = useState(false);
 
     const openModal = (SystemId) => {
         setSelectedSystemId(SystemId);
@@ -65,12 +67,30 @@ function SystemList() {
         setSelectedSystemId(null);
         setModalIsOpen2(false);
     };
+    const openModal3 = (checkedItems) => {
+        setModalIsOpen3(true);
+    };
+
+    const closeModal3 = () => {
+        setModalIsOpen3(false);
+    };
+
     return (
         <div>
             <Card>
                 <CardBody>
-                    <button className="btn" color="secondary" >웹 사용자에게 권한 부여</button>
+<span style={{float:"right"}}>
+            <button className="btn" outline color="secondary" onClick={()=> openModal3(checkedItems)}>웹 사용자에게 권한 부여</button>
+            <Modal isOpen={modalIsOpen3} onRequestClose={closeModal3} style={modalStyles}>
+                {checkedItems && <UserList onClose={closeModal3} checkedItems={checkedItems}/>}
+            </Modal>
+    <Link to="../Forms" style={{textDecorationLine:'none',color:'black'}}>
+            <Button className="btn" outline color="secondary" >
+                  시스템 등록
+                </Button>
 
+            </Link>
+            </span>
 
                     {/*<CardTitle tag="h5">Project Listing</CardTitle>*/}
                     {/*<CardSubtitle className="mb-2 text-muted" tag="h6">*/}

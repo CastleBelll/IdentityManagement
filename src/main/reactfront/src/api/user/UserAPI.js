@@ -13,16 +13,23 @@ export const UserApi = axios.create({
         'REFRESH_TOKEN': REFRESH_TOKEN,
     },
 });
-
+export const SignUpApi = axios.create({
+    baseURL: 'http://localhost:8080',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+});
 export const getUserList = async () =>{
-    const response = await UserApi.get(`/api/v1/useList`);
+    const response = await UserApi.get(`/api/v1/userList`);
     return response.data;
 }
 
 /** SIGNUP API */
 export const signUp = async ({ userId,userName, userPassword }) => {
     const data = {userId, userName, userPassword };
+    // const response = await SignUpApi.post(`/api/v1/user`, data);
     const response = await UserApi.post(`/api/v1/user`, data);
+
     return response.data;
 }
 /** 회원조회 API */

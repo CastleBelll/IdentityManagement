@@ -68,7 +68,20 @@ public class SystemController {
         List<SystemAccount> systemAccount = systemAccountService.getSystemAccountsBySystemId(systemId);
         return new ResponseEntity<>(systemAccount, HttpStatus.OK);
     }
-
+    @PostMapping("/system/select/systemList")
+    public List<SystemDto> getSystemDetailList(@RequestParam List<String> systemIds){
+        try{
+            List<SystemDto> list = systemDBService.getSelectedSystemList(systemIds);
+            for (SystemDto DTO:list
+                 ) {
+                System.out.println(DTO);
+            }
+            return list;
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     @GetMapping("/system/select/detail")
     public SystemDetailDto getSystemById(@RequestParam String systemId){
