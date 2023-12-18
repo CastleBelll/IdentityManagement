@@ -24,15 +24,16 @@ public class SystemAdminService {
 
     private final UserRepository userRepository;
     @Transactional
-    public Long save(SystemAdminDto requestDto) {
-        Optional<SystemDB> result = systemRepository.findBySystemId(requestDto.getSystemId());
-        SystemDB systemDB = result.get();
-        User user = userRepository.findByUserId(requestDto.getUserId()).get();
-        requestDto.setCreateDt(LocalDateTime.now().toString());
-        requestDto.setUpdateDt(LocalDateTime.now().toString());
-        SystemAdmin systemAdmin = requestDto.toEntity();
-        systemAdmin.setSystemDB(systemDB);
-        systemAdmin.setUser(user);
+    public Long save(String systemId, String userId) {
+        SystemDB systemDB = systemRepository.findBySystemId(systemId).get();
+        User user = userRepository.findByUserId(userId).get();
+        SystemAdmin systemAdmin = SystemAdmin.builder()
+                .systemDb(systemDB)
+                .user(user)
+                .createDt(LocalDateTime.now().toString())
+                .updateDt(LocalDateTime.now().toString())
+                .build();
+
         return systemAdminRepository.save(systemAdmin).getSystemAdminNum();
     }
 

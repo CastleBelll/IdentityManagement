@@ -15,13 +15,19 @@ export const SystemAdminApi = axios.create({
 
 
 export const insertSystemAdmin =
-    async ({ systemId, systemAdminId, systemAdminName, systemAdminPassword, userId}) => {
+    async (systemId, userId) => {
         try {
-            const data = { systemId, systemAdminId, systemAdminName, systemAdminPassword, userId
+            const requestData = {
+                systemId: systemId,
+                userId: userId
             };
-            const response = await SystemAdminApi.post('/save', data
-                // 다른 헤더도 필요하다면 추가 가능
-            );
+            console.log( "요청 : " + requestData);
+            const response = await SystemAdminApi.get('/save',{
+                params: {
+                    systemId: systemId,
+                    userId: userId
+                }
+            });
 
             return response.data;
         } catch (error) {

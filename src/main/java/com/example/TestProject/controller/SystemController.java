@@ -10,6 +10,7 @@ import com.example.TestProject.entity.SystemDB;
 import com.example.TestProject.entity.SystemKeyword;
 import com.example.TestProject.repository.SystemKeywordRepository;
 import com.example.TestProject.service.SystemAccountService;
+import com.example.TestProject.service.SystemAdminService;
 import com.example.TestProject.service.SystemDBService;
 import com.example.TestProject.service.SystemKeywordService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,8 @@ public class SystemController {
     private final SystemDBService systemDBService;
     private final SystemKeywordService systemKeywordService;
     private final SystemAccountService systemAccountService;
+
+    private final SystemAdminService systemAdminService ;
     EncodePassword en = new EncodePassword();
 
     @DeleteMapping("/system/delete")
@@ -46,15 +49,14 @@ public class SystemController {
 
 
         SystemKeyword systemKeyword = new SystemKeyword();
-
         systemDBService.save(systemDB, systemKeyword);
 
         return ResponseEntity.ok("Data saved succecss");
     }
 
     @GetMapping("/system/select")
-    public ResponseEntity<List<SystemDto>> findAll() {
-        List<SystemDto> systemDto = systemDBService.findAllDesc();
+    public ResponseEntity<List<SystemDto>> findAll(@RequestParam("userId")String userId) {
+        List<SystemDto> systemDto = systemDBService.findAllDesc(userId);
         for(SystemDto systemDB : systemDto){
             String systemId = systemDB.getSystemId();
             int accountCount = systemAccountService.getSystemAccountCountBySystemId(systemId);
@@ -72,10 +74,6 @@ public class SystemController {
     public List<SystemDto> getSystemDetailList(@RequestParam List<String> systemIds){
         try{
             List<SystemDto> list = systemDBService.getSelectedSystemList(systemIds);
-            for (SystemDto DTO:list
-                 ) {
-                System.out.println(DTO);
-            }
             return list;
         } catch (Exception e){
             e.printStackTrace();

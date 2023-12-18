@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {insertSystemAdmin, SystemAdminApi} from "./SystemAdminApi";
 
 
 const TOKEN_TYPE = localStorage.getItem("tokenType");
@@ -17,7 +18,9 @@ export const SystemApi = axios.create({
 // API 호출
 export const getSystemList = async () => {
     try {
-        const response = await SystemApi.get('/select');
+        const response = await SystemApi.get('/select',{params : {
+                                                            userId : localStorage.getItem("userId")
+        }});
         console.log('백엔드 응답:', response.data);
         return response.data;
     } catch (error) {
@@ -54,11 +57,11 @@ export const insertSystem =
     try {
         const data = { systemId, systemName, systemDesc, ipAddr, systemType, systemCategory
         };
-        const response = await SystemApi.post('/save', data
+        const system = await SystemApi.post('/save', data
              // 다른 헤더도 필요하다면 추가 가능
         );
 
-        return response.data;
+        return [system.data];
     } catch (error) {
         console.error('에러 발생:', error);
         return []; // 에러 발생 시 빈 배열 반환

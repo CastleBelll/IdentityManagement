@@ -81,7 +81,7 @@ function SystemList() {
                 <CardBody>
 <span style={{float:"right"}}>
             <button className="btn" outline color="secondary" onClick={()=> openModal3(checkedItems)}>웹 사용자에게 권한 부여</button>
-            <Modal isOpen={modalIsOpen3} onRequestClose={closeModal3} style={modalStyles}>
+            <Modal isOpen={modalIsOpen3} onRequestClose={closeModal3}>
                 {checkedItems && <UserList onClose={closeModal3} checkedItems={checkedItems}/>}
             </Modal>
     <Link to="../Forms" style={{textDecorationLine:'none',color:'black'}}>

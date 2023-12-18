@@ -13,6 +13,7 @@ import {
 
 import React, { useState } from 'react';
 import {insertSystem} from "../../api/System/SystemApi";
+import {insertSystemAdmin} from "../../api/System/SystemAdminApi";
 
 const Forms = () => {
 
@@ -71,10 +72,10 @@ const Forms = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     try {
-      const response = insertSystem(formData);
+      const response1 = insertSystem(formData);
       alert('정상적으로 등록되었습니다.');
-
-      console.log(response.data); // 서버로부터 받은 응답 확인
+      const response2 = insertSystemAdmin(formData.systemId, localStorage.getItem("userId"))
+      console.log(response2.data); // 서버로부터 받은 응답 확인
 
       // 글쓰기가 성공하면 리다이렉션 또는 다른 작업 수행
     } catch (error) {

@@ -20,15 +20,6 @@ public class SystemAdmin {
     @Column(unique = true, name ="SYSTME_ADMIN_NUM")
     private Long systemAdminNum;
 
-    @Column(name = "SYSTME_ADMIN_ID")
-    private String systemAdminId;
-
-    @Column(name = "SYSTME_ADMIN_NAME")
-    private String  systemAdminName;
-
-    @Column(name = "SYSTME_ADMIN_PASSWORD")
-    private String systemAdminPassword;
-
     @Column(name = "C_DT")
     private String createDt;
 
@@ -44,12 +35,9 @@ public class SystemAdmin {
     private  User user;
 
     @Builder
-    public SystemAdmin(Long systemAdminNum, String systemAdminId, String systemAdminName, String systemAdminPassword,
-                       String createDt, String updateDt, SystemDB systemDb, User user){
+    public SystemAdmin(Long systemAdminNum, String createDt, String updateDt, SystemDB systemDb, User user){
         this.systemAdminNum = systemAdminNum;
-        this.systemAdminName = systemAdminName;
-        this.systemAdminId = systemAdminId;
-        this.systemAdminPassword = systemAdminPassword;
+
         this.systemDB = systemDb;
         this.user = user;
         this.createDt = createDt;

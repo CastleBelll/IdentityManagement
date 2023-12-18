@@ -4,8 +4,10 @@ import com.example.TestProject.dto.SystemDto;
 import com.example.TestProject.dto.SystemKeywordDto;
 import com.example.TestProject.entity.SystemDB;
 import com.example.TestProject.entity.SystemKeyword;
+import com.example.TestProject.entity.User;
 import com.example.TestProject.repository.SystemKeywordRepository;
 import com.example.TestProject.repository.SystemRepository;
+import com.example.TestProject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,7 @@ public class SystemDBService {
     private final SystemRepository systemRepository;
     private final SystemKeywordRepository systemKeywordRepository;
 
+    private final UserRepository userRepository;
     @Transactional
     public void save(SystemDB systemDB, SystemKeyword systemKeyword) {
         systemDB.setCreateBy("manager");
@@ -37,8 +40,8 @@ public class SystemDBService {
     }
 
     @Transactional(readOnly = true)
-    public List<SystemDto> findAllDesc() {
-        return systemRepository.findAll().stream()
+    public List<SystemDto> findAllDesc(String userId) {
+        return systemRepository.findAll(userId).stream()
                 .map(SystemDto::new)
                 .collect(Collectors.toList());
     }

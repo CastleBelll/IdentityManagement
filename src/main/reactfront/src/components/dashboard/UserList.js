@@ -64,7 +64,7 @@ const UserList = ({checkedItems,onClose}) => {
                     {/*<CardSubtitle className="mb-2 text-muted" tag="h6">*/}
                     {/*  Overview of the projects*/}
                     {/*</CardSubtitle>*/}
-
+                    <a>선택된 시스템</a>
                     <Table className="no-wrap mt-3 align-middle text-center" Table bordered hover >
                         <thead>
                         <tr>
@@ -85,6 +85,7 @@ const UserList = ({checkedItems,onClose}) => {
                         ))}
                         </tbody>
                     </Table>
+                    <a>사용자를 선택하세요</a>
                     <Table className="no-wrap mt-3 align-middle text-center" Table bordered hover >
                         <thead>
                         <tr>
@@ -96,7 +97,7 @@ const UserList = ({checkedItems,onClose}) => {
                         <tbody>
                             {userList.map((user,index) => (
                                 <tr key={index} className="border-top">
-                                    <td>{user.userId}</td>
+                                    <td><Button>{user.userId}</Button></td>
                                     <td>{user.userName}</td>
                                     <td>  {user.role === 'ROLE_USER' ? '일반 사용자' : user.role === 'ADMIN' ? '관리자' : ''}
                                     </td>
