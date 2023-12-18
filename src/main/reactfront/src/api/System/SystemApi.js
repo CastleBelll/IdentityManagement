@@ -42,10 +42,14 @@ export const getSystemDetail = async (systemId) => {
 
 export const getSelectedSystemList = async (systemIds) => {
     try {
-        const response = await SystemApi.post(`/select/systemList`, systemIds);
+        const queryString = systemIds.map(id => `systemIds=${encodeURIComponent(id)}`).join('&');
+
+        const url = `/select/systemList?${queryString}`;
+        const response = await SystemApi.get(url);
         // console.log('백엔드 응답:', response.data);
         return response.data;
     } catch (error) {
+        console.error('에러 발생:', error);
 
         return []; // 에러 발생 시 빈 배열 반환
     }

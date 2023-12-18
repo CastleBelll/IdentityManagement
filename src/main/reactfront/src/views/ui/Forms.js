@@ -76,6 +76,7 @@ const Forms = () => {
       alert('정상적으로 등록되었습니다.');
       const response2 = insertSystemAdmin(formData.systemId, localStorage.getItem("userId"))
       console.log(response2.data); // 서버로부터 받은 응답 확인
+      window.location.href = '/';
 
       // 글쓰기가 성공하면 리다이렉션 또는 다른 작업 수행
     } catch (error) {

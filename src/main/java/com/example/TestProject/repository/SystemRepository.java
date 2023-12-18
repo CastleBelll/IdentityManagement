@@ -12,8 +12,10 @@ import java.util.Optional;
 
 public interface SystemRepository extends JpaRepository<SystemDB, Long> {
 
-    @Query("SELECT a FROM SystemDB a, SystemAdmin b WHERE a.systemId = b.systemDB.systemId and b.user.userId = :userId")
+    @Query("SELECT a FROM SystemDB a JOIN SystemAdmin b ON a.systemId = b.systemDB.systemId WHERE b.user.userId = :userId")
     List<SystemDB> findAll(@Param("userId") String userId);
+//    @Query("SELECT s FROM SystemDB s")
+//    List<SystemDB> findAll(@Param("userId") String userId);
 
     @Query("SELECT s FROM SystemDB s WHERE s.systemId = :systemId")
     Optional<SystemDB> findBySystemId(@Param("systemId") String systemId);

@@ -41,8 +41,7 @@ public class WebSecurityConfig {
 //                // 회원가입 및 로그인 관련 모든 요청에 대해 아무나 승인
                 .antMatchers("/system/admin/**").hasRole("USER")
                 .antMatchers("/system/**").hasRole("USER")
-                .antMatchers("/system/select/systemList").hasRole("USER")
-
+                .antMatchers( "/system/select/systemList").hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/api/v1/user").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/api/v1/user").permitAll()
                 .antMatchers(HttpMethod.PUT, "/api/v1/user").permitAll()

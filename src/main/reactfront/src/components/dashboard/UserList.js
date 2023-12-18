@@ -1,15 +1,13 @@
 // PostDetail.js
 import React, { useEffect, useState, useCallback} from 'react';
 
-import {getSystemAccounts} from "../../api/System/SystemUserApi";
 import {useNavigate} from "react-router-dom";
-import {ButtonGroup, Button, Form, FormGroup, Input, Label, Card, CardBody, Table} from "reactstrap";
+import {Button ,Card, CardBody, Table} from "reactstrap";
 import Modal from "react-modal";
-import modalStyles from "../../layout/ModalStyles";
 import {getSelectedSystemList} from "../../api/System/SystemApi";
 import {getUserList} from "../../api/user/UserAPI";
-import SystemDetail from "./SystemDetail";
-import SystemAccountList from "./SystemAccountList";
+
+Modal.setAppElement('#root');
 
 const UserList = ({checkedItems,onClose}) => {
     const navigate = useNavigate();
@@ -17,30 +15,41 @@ const UserList = ({checkedItems,onClose}) => {
     const username = localStorage.getItem("userId");
     const selectSystemIds = checkedItems;
     const [systems, setSystems] = useState([]);
-    const [userList, setuserList] = useState([]);
+    const [userList, setUserList] = useState([]);
 
-    console.log("토큰 : " + accessToken +"\n"
-        +"username : " + username);
+    console.log("요청", selectSystemIds);
+    const setSystemTable = async () => {
+        try{
+            const systems = await getSelectedSystemList(checkedItems);
+            setSystems(systems);
+            console.log(systems)
+        }
+        catch (error) {
+            console.error('시스템 에러 발생:', error);
+            return []; // 에러 발생 시 빈 배열 반환
+        }
+
+    }
+    const setUserTable = async () => {
+        try{
+            const users = await getUserList();
+            setUserList(users);
+            console.log(users);
+        }
+        catch (error) {
+            console.error('유저 에러 발생:', error);
+            return []; // 에러 발생 시 빈 배열 반환
+        }
+
+    }
     useEffect(() => {
         if( accessToken == null){
             alert("로그인하세요");
             navigate('/About');
         }else{
             const fetchData = async () => {
-                try{
-                    const systems = await getSelectedSystemList(selectSystemIds);
-                    setSystems(systems);
-                    const userList = await getUserList();
-                    setuserList(userList);
-                    console.log(systems);
-                    console.log(userList);
-
-                }
-
-                catch (error) {
-                    console.error('에러 발생:', error);
-                    return []; // 에러 발생 시 빈 배열 반환
-                }
+                await setSystemTable();
+                await setUserTable();
             };
 
             fetchData();
@@ -97,7 +106,7 @@ const UserList = ({checkedItems,onClose}) => {
                         <tbody>
                             {userList.map((user,index) => (
                                 <tr key={index} className="border-top">
-                                    <td><Button>{user.userId}</Button></td>
+                                    <td><Button >{user.userId}</Button></td>
                                     <td>{user.userName}</td>
                                     <td>  {user.role === 'ROLE_USER' ? '일반 사용자' : user.role === 'ADMIN' ? '관리자' : ''}
                                     </td>

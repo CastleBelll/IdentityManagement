@@ -79,17 +79,12 @@ function SystemList() {
         <div>
             <Card>
                 <CardBody>
-<span style={{float:"right"}}>
-            <button className="btn" outline color="secondary" onClick={()=> openModal3(checkedItems)}>웹 사용자에게 권한 부여</button>
-            <Modal isOpen={modalIsOpen3} onRequestClose={closeModal3}>
-                {checkedItems && <UserList onClose={closeModal3} checkedItems={checkedItems}/>}
-            </Modal>
-    <Link to="../Forms" style={{textDecorationLine:'none',color:'black'}}>
-            <Button className="btn" outline color="secondary" >
-                  시스템 등록
-                </Button>
+            <span style={{textDecorationLine:'none',color:'black', float:"right"}}>
+                <Button className="btn" outline color="secondary" onClick={()=> openModal3(checkedItems)}>웹 사용자에게 권한 부여</Button>
+                <Modal isOpen={modalIsOpen3} onRequestClose={closeModal3}>
+                    {checkedItems && <UserList onClose={closeModal3} checkedItems={checkedItems}/>}
+                </Modal>
 
-            </Link>
             </span>
 
                     {/*<CardTitle tag="h5">Project Listing</CardTitle>*/}
