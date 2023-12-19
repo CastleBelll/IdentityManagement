@@ -18,7 +18,8 @@ export default function SignUpPage() {
     const handleSubmit = async (e) => {
         signUp(values)
             .then((response) => {
-                navigate('/About');
+                alert('회원가입 성공');
+                navigate("/about");
             }).catch((error) => {
             console.log(error);
         });

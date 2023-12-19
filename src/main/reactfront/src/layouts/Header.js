@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {
   Navbar,
   Collapse,
@@ -20,11 +20,19 @@ const Header = () => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
-
+  const navigate = useNavigate();
   const toggle = () => setDropdownOpen((prevState) => !prevState);
   const Handletoggle = () => {
     setIsOpen(!isOpen);
   };
+  const ClickedLogout = () =>{
+      localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("userId");
+    alert("로그아웃되었습니다.");
+    navigate('/About');
+
+  }
 
   return (
     <Navbar color="white" light expand="md" className="fix-header">
@@ -76,7 +84,7 @@ const Header = () => {
             <DropdownItem>내 계정</DropdownItem>
             <DropdownItem>관리 계정</DropdownItem>
             <DropdownItem divider />
-            <DropdownItem>로그아웃</DropdownItem>
+            <DropdownItem onClick={ClickedLogout}>로그아웃</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </Collapse>

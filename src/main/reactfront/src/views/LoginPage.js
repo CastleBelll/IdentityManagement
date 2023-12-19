@@ -80,7 +80,6 @@ export default function LoginPage() {
                       <Link to="/signup">
                       <Button className="btn" outline color="success" size="sm">회원가입</Button>
                       </Link>
-                      <Button className="btn" outline color="warning" size="sm" >계정 찾기</Button>
                     </div>
                   </Form>
                 </CardBody>

@@ -66,4 +66,9 @@ try {
     public List<SystemAccount> getSystemAccountsBySystemId(String systemId) {
         return systemAccountRepository.findAccountsBySystemId(systemId);
     }
+
+    @Transactional
+    public String getPassword(String systemId, String systemUserId){
+        return systemAccountRepository.getPassword(systemId,systemUserId);
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.TestProject.service;
 
+import com.example.TestProject.common.Common;
 import com.example.TestProject.dto.SystemDto;
 import com.example.TestProject.dto.SystemKeywordDto;
 import com.example.TestProject.entity.SystemDB;
@@ -24,14 +25,14 @@ import java.util.stream.Collectors;
 public class SystemDBService {
     private final SystemRepository systemRepository;
     private final SystemKeywordRepository systemKeywordRepository;
-
+    Common common = new Common();
     private final UserRepository userRepository;
     @Transactional
     public void save(SystemDB systemDB, SystemKeyword systemKeyword) {
         systemDB.setCreateBy("manager");
         systemDB.setSyncYn("N");
-        systemDB.setCreateDt(LocalDateTime.now().toString());
-        systemDB.setSyncDt(LocalDateTime.now().toString());
+        systemDB.setCreateDt(common.DateToString(LocalDateTime.now()));
+        systemDB.setSyncDt(common.DateToString(LocalDateTime.now()));
 
         SystemDB saveSystemDB = systemRepository.save(systemDB);
 
@@ -42,6 +43,13 @@ public class SystemDBService {
     @Transactional(readOnly = true)
     public List<SystemDto> findAllDesc(String userId) {
         return systemRepository.findAll(userId).stream()
+                .map(SystemDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<SystemDto> findAllDesc() {
+        return systemRepository.findAll().stream()
                 .map(SystemDto::new)
                 .collect(Collectors.toList());
     }

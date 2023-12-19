@@ -24,8 +24,7 @@ export const getSystemList = async () => {
         console.log('백엔드 응답:', response.data);
         return response.data;
     } catch (error) {
-        console.error('에러 발생:', error);
-        return []; // 에러 발생 시 빈 배열 반환
+        return error.response.status; // 에러 발생 시 빈 배열 반환
     }
 };
 

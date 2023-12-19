@@ -16,6 +16,8 @@ public interface SystemRepository extends JpaRepository<SystemDB, Long> {
     List<SystemDB> findAll(@Param("userId") String userId);
 //    @Query("SELECT s FROM SystemDB s")
 //    List<SystemDB> findAll(@Param("userId") String userId);
+    @Query("SELECT a FROM SystemDB a" )
+    List<SystemDB> findAllAdmin();
 
     @Query("SELECT s FROM SystemDB s WHERE s.systemId = :systemId")
     Optional<SystemDB> findBySystemId(@Param("systemId") String systemId);

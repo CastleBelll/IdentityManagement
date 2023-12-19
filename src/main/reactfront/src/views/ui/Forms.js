@@ -127,15 +127,6 @@ const Forms = () => {
                       onChange={handleChange}
                       required
                   />
-
-                  <a
-                      className="btn"
-                      outline color="secondary"
-                      style={{float:"right",marginTop:"5px"}}
-                  >
-                    ID Check
-                  </a>
-
                 </FormGroup>
                 <FormGroup>
                   <Label for="systemName">System Name</Label>

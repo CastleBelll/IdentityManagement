@@ -14,6 +14,8 @@ function SystemList() {
     const accessToken = localStorage.getItem("accessToken");
     const username = localStorage.getItem("userId");
 
+
+
     console.log("토큰 : " + accessToken +"\n"
         +"username : " + username);
     useEffect(() => {
@@ -23,7 +25,13 @@ function SystemList() {
         }else{
             const fetchData = async () => {
                 const data = await getSystemList();
-                setSystems(data);
+                if (data === 403) {
+                    alert("로그인하세요");
+                    navigate('/About');
+                }
+                else{
+                    setSystems(data);
+                }
                 // ...데이터를 처리하는 로직 작성
             };
 
@@ -75,6 +83,13 @@ function SystemList() {
         setModalIsOpen3(false);
     };
 
+    const formatDateString = dateString => {
+        const year = dateString.slice(0, 4);
+        const month = dateString.slice(4, 6);
+        const day = dateString.slice(6, 8);
+        return `${year}-${month}-${day}`;
+    };
+
     return (
         <div>
             <Card>
@@ -121,7 +136,10 @@ function SystemList() {
                                     {/*  width="45"*/}
                                     {/*  height="45"*/}
                                     {/*/>*/}
-                                    <a onClick={() => openModal(system.systemId)}>
+                                    <a style={{ fontWeight: 'bold', color: 'blue' }}
+                                       onMouseOver={(e) => e.target.style.cursor = 'pointer'}
+                                       onMouseOut={(e) => e.target.style.cursor = 'default'}
+                                        onClick={() => openModal(system.systemId)}>
                                     {system.systemId}
                                     </a>
                                     <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={modalStyles}>
@@ -138,7 +156,10 @@ function SystemList() {
                                 <td>{system.systemType}</td>
                                 <td>{system.ipAddr}</td>
                                 <td>
-                                    <a onClick={()=> openModal2(system.systemId)}>
+                                    <a style={{ fontWeight: 'bold', color: 'blue' }}
+                                       onMouseOver={(e) => e.target.style.cursor = 'pointer'}
+                                       onMouseOut={(e) => e.target.style.cursor = 'default'}
+                                       onClick={()=> openModal2(system.systemId)}>
                                         {system.system_user_id_count}
                                     </a>
                                     <Modal isOpen={modalIsOpen2} onRequestClose={closeModal2} style={modalStyles}>
@@ -146,8 +167,8 @@ function SystemList() {
                                     </Modal>
                                 </td>
                                 <td>1</td>
-                                <td>{system.createDt}</td>
-                                <td>{system.syncDt}</td>
+                                <td>{formatDateString(system.createDt)}</td>
+                                <td>{formatDateString(system.syncDt)}</td>
                                 <td>
                                     {system.syncYn === "N" ? (
                                         <span className="p-2 bg-danger rounded-circle d-inline-block"></span>
@@ -167,149 +188,3 @@ function SystemList() {
 }
 
 export default SystemList;
-
-
-
-
-
-// const tableData = [
-//   {
-//    // avatar: user1,
-//     id: "System1",
-//     email: "CentOS",
-//     project: "192.168.10.1",
-//     weeks: "35",
-//     admin: "-",
-//     budget: "2023-11-01",
-//     status: "N",
-//     checked:false
-//   },
-//   {
-//    // avatar: user2,
-//     id: "System2",
-//     email: "RedHat",
-//     project: "192.168.10.2",
-//     weeks: "35",
-//     admin: "-",
-//     budget: "2023-11-02",
-//     status: "Y",
-//     checked:false
-//   },
-//   {
-//   //  avatar: user3,
-//     id: "System3",
-//     email: "Windows",
-//     project: "192.168.10.3",
-//     weeks: "4",
-//     admin: "3",
-//     budget: "2023-11-06",
-//     status: "Y",
-//     checked:false
-//   },
-//   {
-//   //  avatar: user4,
-//     id: "System4",
-//     email: "MSSQL",
-//     project: "192.168.10.4",
-//     weeks: "352",
-//     admin: "4",
-//     budget: "2023-11-06",
-//     status: "N",
-//     checked:false
-//   },
-//   {
-//   //  avatar: user5,
-//     id: "System5",
-//     email: "Oracle",
-//     project: "192.168.10.5",
-//     weeks: "2",
-//     admin: "2",
-//     budget: "2023-11-06",
-//     status: "N",
-//     checked:false
-//   },
-//   {
-//     //  avatar: user5,
-//     id: "System5",
-//     email: "Oracle",
-//     project: "192.168.10.5",
-//     weeks: "6",
-//     admin: "1",
-//     budget: "2023-11-06",
-//     status: "N",
-//     checked:false
-//   },
-//   {
-//     //  avatar: user5,
-//     id: "System5",
-//     email: "Oracle",
-//     project: "192.168.10.5",
-//     weeks: "7",
-//     admin: "5",
-//     budget: "2023-11-06",
-//     status: "N",
-//     checked:false
-//   },
-//   {
-//     //  avatar: user5,
-//     id: "System5",
-//     email: "Oracle",
-//     project: "192.168.10.5",
-//     weeks: "127",
-//     admin: "3",
-//     budget: "2023-11-07",
-//     status: "N",
-//     checked:false
-//   },
-//   {
-//     //  avatar: user5,
-//     id: "System5",
-//     email: "Oracle",
-//     project: "192.168.10.5",
-//     weeks: "53",
-//     admin: "-",
-//     budget: "2023-11-06",
-//     status: "N",
-//     checked:false
-//   },
-//   {
-//     //  avatar: user5,
-//     id: "System5",
-//     email: "Oracle",
-//     project: "192.168.10.5",
-//     weeks: "42",
-//     admin: "-",
-//     budget: "2023-11-08",
-//     status: "N",
-//     checked:false
-//   },
-//   {
-//     //  avatar: user5,
-//     id: "System5",
-//     email: "Oracle",
-//     project: "192.168.10.5",
-//     weeks: "35",
-//     admin: "-",
-//     budget: "2023-11-06",
-//     status: "N",
-//     checked:false
-//   },
-// ];
-// const [checkboxes, setCheckboxes] = useState(tableData);
-//
-// const handleSelectAll = () => {
-//   const updatedCheckboxes = checkboxes.map(checkbox => ({
-//     ...checkbox,
-//     checked: !checkboxes.every(cb => cb.checked)
-//   }));
-//   setCheckboxes(updatedCheckboxes);
-// };
-//
-// const handleCheckboxChange = (id) => {
-//   const updatedCheckboxes = checkboxes.map(checkbox =>
-//       checkbox.id === id ? { ...checkbox, checked: !checkbox.checked } : checkbox
-//   );
-//   setCheckboxes(updatedCheckboxes);
-// };
-
-

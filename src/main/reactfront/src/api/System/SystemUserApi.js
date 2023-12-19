@@ -15,7 +15,7 @@ export const SystemApi = axios.create({
 });
 
 // API 호출
-export const syncLinux = async (systemId, ipAddr, loginId, loginPasswd) => {
+export const syncLinux = async (systemId, ipAddr, loginId, loginPasswd, loginPort) => {
     try {
         const response = await SystemApi.get(`/getLinuxAccounts`, {
             params: {
@@ -23,9 +23,10 @@ export const syncLinux = async (systemId, ipAddr, loginId, loginPasswd) => {
                 ipAddr: `${ipAddr}`,
                 loginId: `${loginId}`,
                 loginPasswd: `${loginPasswd}`,
+                loginPort:`${loginPort}`
             },
         });
-        console.log(`/getLinuxAccounts?systemId=${systemId}&ipAddr=${ipAddr}&loginId=${loginId}&loginPasswd=${loginPasswd}`);
+        alert(response.data);
         console.log('백엔드 응답:', response.data);
         return response.data;
     } catch (error) {
@@ -46,5 +47,37 @@ export const getSystemAccounts = async (systemId) => {
     } catch (error) {
         console.error('에러 발생:', error);
         return []; // 에러 발생 시 빈 배열 반환
+    }
+};
+
+export const getAccountPassword = async (systemId, systemUserId) => {
+    try {
+        const response = await SystemApi.get('/getAccountPassword', {
+            params:{
+                systemId: `${systemId}`,
+                systemUserId: `${systemUserId}`,
+            },
+        });
+        console.log('백엔드 응답222 : ', response.data);
+        return response.data;
+    } catch (error){
+        console.error('에러 발생 : ', error);
+        return [];
+    }
+};
+
+export const setAccountPassword = async (systemId, systemUserId) => {
+    try {
+        const response = await SystemApi.get('/getAccountPassword', {
+            params:{
+                systemId: `${systemId}`,
+                systemUserId: `${systemUserId}`,
+            },
+        });
+        console.log('백엔드 응답222 : ', response.data);
+        return response.data;
+    } catch (error){
+        console.error('에러 발생 : ', error);
+        return [];
     }
 };

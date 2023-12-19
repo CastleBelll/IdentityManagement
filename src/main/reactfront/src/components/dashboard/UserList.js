@@ -6,6 +6,7 @@ import {Button ,Card, CardBody, Table} from "reactstrap";
 import Modal from "react-modal";
 import {getSelectedSystemList} from "../../api/System/SystemApi";
 import {getUserList} from "../../api/user/UserAPI";
+import {insertSystemAdmin} from "../../api/System/SystemAdminApi";
 
 Modal.setAppElement('#root');
 
@@ -16,8 +17,7 @@ const UserList = ({checkedItems,onClose}) => {
     const selectSystemIds = checkedItems;
     const [systems, setSystems] = useState([]);
     const [userList, setUserList] = useState([]);
-
-    console.log("요청", selectSystemIds);
+    const [selectUser, setSelectUser] = useState(null);
     const setSystemTable = async () => {
         try{
             const systems = await getSelectedSystemList(checkedItems);
@@ -56,7 +56,22 @@ const UserList = ({checkedItems,onClose}) => {
         }
 
     }, []); //
+    const handleUserIdClicked = (userId) => {
+        setSelectUser(userId);
+        checkedItems.map(async function (systemId) {
+            try{
+                const response = await insertSystemAdmin(systemId, userId);
+                console.log(response.data);
+                alert('선택한 사용자 ${userId}에게 해당 시스템의 관리 권한을 부여했습니다');
 
+            }
+            catch (error) {
+                console.log(error);
+            }
+
+        })
+
+    }
     const handleClose = () => {
         // 부모 컴포넌트에 닫기 이벤트를 전달
         onClose();
@@ -104,14 +119,18 @@ const UserList = ({checkedItems,onClose}) => {
                         </tr>
                         </thead>
                         <tbody>
-                            {userList.map((user,index) => (
-                                <tr key={index} className="border-top">
-                                    <td><Button >{user.userId}</Button></td>
-                                    <td>{user.userName}</td>
-                                    <td>  {user.role === 'ROLE_USER' ? '일반 사용자' : user.role === 'ADMIN' ? '관리자' : ''}
-                                    </td>
-                                </tr>
-                            ))}
+                        {userList.map((user,index) => (
+                            <tr key={index} className="border-top">
+                                {user.userId != username ? (
+                                    <Button onClick={() => handleUserIdClicked(user.userId)}>{user.userId}</Button>
+                                ) : (
+                                    <Button>{user.userId +"(사용자)"}</Button> // 조건이 맞지 않을 때 보여줄 내용
+                                )}
+                                <td>{user.userName}</td>
+                                <td>  {user.role === 'ROLE_USER' ? '일반 사용자' : user.role === 'ADMIN' ? '관리자' : ''}
+                                </td>
+                            </tr>
+                        ))}
                         </tbody>
                     </Table>
                 </CardBody>

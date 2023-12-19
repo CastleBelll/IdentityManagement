@@ -1,5 +1,5 @@
 import { Col, Row } from "reactstrap";
-import ProjectTables from "../../components/dashboard/SystemList";
+import ProjectTables from "../../components/dashboard/WebUserList";
 
 import { CardTitle } from "reactstrap";
 
@@ -14,11 +14,6 @@ const Alerts = () => {
         <Col lg="12">
           <ProjectTables/>
         </Col>
-      </Row>
-      <Row>
-        <span>
-          Starter 원본
-        </span>
       </Row>
     </div>
   );

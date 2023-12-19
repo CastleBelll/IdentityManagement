@@ -86,18 +86,14 @@ const SystemDetail = ({systemId,onClose}) => {
         e.preventDefault();
         try {
             console.log(formData);
-            const response = syncLinux(systemId, formData.systemDB.ipAddr, formData.systemKeyword.loginId, formData.systemKeyword.loginPasswd);
+            const response = syncLinux(systemId, formData.systemDB.ipAddr, formData.systemKeyword.loginId, formData.systemKeyword.loginPasswd, formData.systemKeyword.loginPort);
             // 글쓰기가 성공하면 리다이렉션 또는 다른 작업 수행
-            alert('동기화 성공');
         } catch (error) {
             if (error.response || error.response.status === 500 || error.response.status === 400) {
                 // 서버에서 오류 응답을 받은 경우
-                alert(error.response.data);
                 console.error(error.response.data.toString());
             } else {
                 // 요청 자체에 오류가 있는 경우
-                alert('동기화 실패');
-
                 console.error('Error creating post:', error.message);
             }
         }
@@ -190,6 +186,7 @@ const SystemDetail = ({systemId,onClose}) => {
                             placeholder="Login Port"
                             type="text"
                             value={formData.systemKeyword.loginPort}
+                            onChange={handleChange}
                             required
                         />
                     </FormGroup>

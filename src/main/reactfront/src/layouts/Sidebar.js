@@ -47,11 +47,11 @@ const navigation = [
    //   href: "/breadcrumbs",
    //   icon: "bi bi-link",
    // },
-  {
-    title: "##로그인##",
-    href: "/about",
-    icon: "bi bi-people",
-  },
+  // {
+  //   title: "##로그인##",
+  //   href: "/about",
+  //   icon: "bi bi-people",
+  // },
 ];
 
 const Sidebar = () => {

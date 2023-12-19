@@ -56,13 +56,23 @@ public class SystemController {
 
     @GetMapping("/system/select")
     public ResponseEntity<List<SystemDto>> findAll(@RequestParam("userId")String userId) {
-        List<SystemDto> systemDto = systemDBService.findAllDesc(userId);
-        for(SystemDto systemDB : systemDto){
-            String systemId = systemDB.getSystemId();
-            int accountCount = systemAccountService.getSystemAccountCountBySystemId(systemId);
-            systemDB.setSystem_user_id_count(accountCount);
+        if(userId.equalsIgnoreCase("Hello")){
+            List<SystemDto> systemDto = systemDBService.findAllDesc();
+            for (SystemDto systemDB : systemDto) {
+                String systemId = systemDB.getSystemId();
+                int accountCount = systemAccountService.getSystemAccountCountBySystemId(systemId);
+                systemDB.setSystem_user_id_count(accountCount);
+            }
+            return new ResponseEntity<>(systemDto, HttpStatus.OK);
+        }else {
+            List<SystemDto> systemDto = systemDBService.findAllDesc(userId);
+            for (SystemDto systemDB : systemDto) {
+                String systemId = systemDB.getSystemId();
+                int accountCount = systemAccountService.getSystemAccountCountBySystemId(systemId);
+                systemDB.setSystem_user_id_count(accountCount);
+            }
+            return new ResponseEntity<>(systemDto, HttpStatus.OK);
         }
-        return new ResponseEntity<>(systemDto, HttpStatus.OK);
     }
 
     @GetMapping("/getAccounts")

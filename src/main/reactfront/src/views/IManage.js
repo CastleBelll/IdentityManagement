@@ -23,11 +23,6 @@ const IManage = () => {
           <ProjectTables/>
         </Col>
       </Row>
-      <Row>
-        <span>
-          Starter 원본
-        </span>
-      </Row>
     </div>
   );
 };
